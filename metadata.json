@@ -1,0 +1,6 @@
+{
+  "name": "AI Software Compiler",
+  "description": "A deterministic multi-stage AI software compiler that transforms natural language requirements into structured, validated full-stack application specifications featuring a validation, repair, and simulation engine.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
