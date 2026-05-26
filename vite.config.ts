@@ -12,12 +12,14 @@ export default defineConfig(() => {
       },
     },
     server: {
-  proxy: {
-    '/api': {
-      target: 'https://stark-synthesis.web.app/',
-      changeOrigin: true,
+      hmr: process.env.DISABLE_HMR !== 'true',
+      watch: process.env.DISABLE_HMR === 'true' ? null : {},
+      proxy: {
+        '/api': {
+          target: 'https://stark-synthesis.web.app/',
+          changeOrigin: true,
+        },
+      },
     },
-  },
-},
   };
 });
