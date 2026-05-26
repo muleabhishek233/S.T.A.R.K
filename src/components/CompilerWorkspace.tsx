@@ -92,13 +92,20 @@ export default function CompilerWorkspace({
     }
 
     try {
-      const response = await fetch("/api/compile", {
+      const apiBase = import.meta.env.VITE_API_URL || "";
+const response = await fetch(`${apiBase}/api/compile`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: activePromptText })
       });
       
-      const data = await response.json();
+      const contentType = response.headers.get("content-type") || "";
+if (!contentType.includes("application/json")) {
+  throw new Error(
+    `Backend unreachable (HTTP ${response.status}). Set VITE_API_URL to your backend URL in .env.production.`
+  );
+}
+const data = await response.json();
       
       if (response.ok) {
         setLogs(data.logs || []);
