@@ -17,6 +17,17 @@ async function startServer() {
   const PORT = 3000;
 
   app.use(express.json({ limit: "15mb" }));
+  app.use((req, res, next) => {
+  const origin = req.headers.origin || "";
+  const allowed = [process.env.ALLOWED_ORIGIN || "", "http://localhost:5173", "http://localhost:3000"].filter(Boolean);
+  if (allowed.some(o => origin.startsWith(o)) || !origin) {
+    res.setHeader("Access-Control-Allow-Origin", origin || "*");
+  }
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  if (req.method === "OPTIONS") { res.sendStatus(204); return; }
+  next();
+});
 
   // API 1: Execute Compiler Pipeline
   app.post("/api/compile", async (req, res) => {
